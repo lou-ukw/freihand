@@ -1,0 +1,603 @@
+/* ============================================================
+   FREIHAND – Hörstation
+   Schwarzweiß. Grotesk für Text, Schreibschrift für Titel.
+   ============================================================ */
+
+/* ---------- Schriften (liegen lokal im Ordner, kein Internet nötig) ---------- */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../fonts/archivo-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+                 U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("../fonts/archivo-latin-ext-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+                 U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+                 U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Schreibschrift 1: Borel – verbundene Schreibschrift. Aktiv. */
+@font-face {
+  font-family: "Borel";
+  src: url("../fonts/borel-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+                 U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Borel";
+  src: url("../fonts/borel-latin-ext-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+                 U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+                 U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Schreibschrift 2: Grape Nuts – bleistiftnäher, feiner.
+   Zum Wechseln unten --schreibschrift auf "Grape Nuts" setzen und die
+   beiden Werte darunter mit anpassen. */
+@font-face {
+  font-family: "Grape Nuts";
+  src: url("../fonts/grape-nuts-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+                 U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Grape Nuts";
+  src: url("../fonts/grape-nuts-latin-ext-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+                 U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+                 U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* ---------- Stellschrauben ---------- */
+
+:root {
+  --papier:  #ffffff;
+  --tinte:   #000000;
+  --grau:    #6b6b6b;   /* Nebentext */
+  --linie:   #d4d4d4;   /* Haarlinien, Lineatur */
+  --flaeche: #f1f1f1;   /* leere Bildfläche */
+
+  --grotesk: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --schreibschrift: "Borel", "Grape Nuts", cursive;
+
+  /* Borel hat lange Ober- und Unterlängen und wirkt optisch kleiner als
+     andere Schreibschriften. Beide Werte gehören zusammen: Wird die
+     Schreibschrift gewechselt, hier nachjustieren.
+     Borel:      1.00 / 1.35     Grape Nuts: 1.25 / 1.05 */
+  --schreib-groesse: 1;
+  --schreib-zeilen: 1.35;
+
+  /* Auf 1 lassen, damit farbige Vorlagen zum Schwarzweiß passen.
+     Für Farbbilder auf 0 setzen. */
+  --bild-graustufen: 1;
+
+  --rand: clamp(1.25rem, 4vw, 4rem);
+  --breite: 78rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: clamp(17px, 0.55vw + 14px, 21px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--tinte);
+  font-family: var(--grotesk);
+  font-weight: 400;
+  line-height: 1.55;
+  font-variant-numeric: lining-nums tabular-nums;
+
+  /* Kiosk: kein Textmarkieren, kein Doppeltipp-Zoom, kein Overscroll */
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+/* Fließtext darf markiert werden – für Vorlesehilfen und Screenreader-Tools */
+.text, .transkript__inhalt { -webkit-user-select: text; user-select: text; }
+
+img { max-width: 100%; display: block; }
+svg { width: 100%; height: 100%; fill: currentColor; }
+
+:focus-visible {
+  outline: 3px solid var(--tinte);
+  outline-offset: 4px;
+}
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--tinte); color: var(--papier);
+  padding: .75em 1.25em; z-index: 20;
+}
+.skip:focus { left: 1rem; top: 1rem; }
+
+main:focus { outline: none; }
+
+
+/* ---------- Kopfzeile ---------- */
+
+.kopf {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem var(--rand);
+  border-bottom: 1px solid var(--tinte);
+}
+
+.kopf__marke {
+  display: flex;
+  align-items: baseline;
+  gap: .8rem;
+  flex-wrap: wrap;
+  text-decoration: none;
+  color: inherit;
+}
+
+.kopf__titel {
+  font-weight: 700;
+  letter-spacing: .14em;
+  font-size: .95rem;
+}
+
+.kopf__unter,
+.kopf__ort {
+  color: var(--grau);
+  font-size: .8rem;
+  letter-spacing: .02em;
+}
+
+
+/* ---------- Übersicht ---------- */
+
+.uebersicht {
+  max-width: var(--breite);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) var(--rand) 5rem;
+}
+
+.intro {
+  max-width: 44rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.schreib {
+  font-family: var(--schreibschrift);
+  font-weight: 400;
+  line-height: var(--schreib-zeilen);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.intro__titel {
+  font-size: calc(clamp(3rem, 9vw, 6.2rem) * var(--schreib-groesse));
+  margin-bottom: .2em;
+}
+
+.intro__text {
+  margin: 0;
+  font-size: 1.05rem;
+  max-width: 36em;
+}
+
+.intro__quellen {
+  margin: 1.1rem 0 0;
+  font-size: .78rem;
+  color: var(--grau);
+  max-width: 36em;
+}
+
+.kacheln {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+.kachel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 15rem;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--tinte);
+  background: var(--papier);
+  transition: background-color .12s linear, color .12s linear;
+}
+
+.kachel__bild {
+  aspect-ratio: 4 / 3;
+  background: var(--flaeche);
+  overflow: hidden;
+  border-bottom: 1px solid var(--tinte);
+}
+.kachel__bild img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(var(--bild-graustufen));
+}
+
+.kachel__körper {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: .3rem;
+}
+
+.kachel__nr {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  color: var(--grau);
+}
+
+.kachel__titel {
+  font-family: var(--schreibschrift);
+  font-weight: 400;
+  font-size: calc(clamp(1.55rem, 2.8vw, 2rem) * var(--schreib-groesse));
+  line-height: var(--schreib-zeilen);
+  margin: .1em 0 0;
+  hyphens: auto;
+}
+
+.kachel__fuss {
+  margin-top: auto;
+  padding-top: .9rem;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: .8rem;
+  color: var(--grau);
+}
+
+.kachel__play {
+  width: 1.5rem; height: 1.5rem;
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.kachel__play svg { width: .6rem; height: .6rem; }
+
+.kachel:hover,
+.kachel:active {
+  background: var(--tinte);
+  color: var(--papier);
+}
+.kachel:hover .kachel__nr,
+.kachel:hover .kachel__fuss,
+.kachel:active .kachel__nr,
+.kachel:active .kachel__fuss { color: var(--papier); }
+.kachel:hover .kachel__bild,
+.kachel:active .kachel__bild { border-bottom-color: var(--papier); }
+
+.kachel:focus-visible { outline-offset: 2px; }
+
+
+/* ---------- Kapitelseite ---------- */
+
+.kapitel {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 1.5rem var(--rand) 6rem;
+}
+
+.kapitel__leiste {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.4rem;
+}
+
+.zurueck {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 3rem;
+  padding: .4rem .9rem .4rem .5rem;
+  margin-left: -.5rem;
+  color: inherit;
+  text-decoration: none;
+  font-size: .95rem;
+  font-weight: 500;
+}
+.zurueck svg {
+  width: 1.4rem; height: 1.4rem;
+  fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.zurueck:hover { text-decoration: underline; text-underline-offset: .25em; }
+
+.zaehler {
+  font-size: .8rem;
+  letter-spacing: .1em;
+  color: var(--grau);
+}
+
+.kapitel__titel {
+  font-size: calc(clamp(2.3rem, 6.5vw, 4.4rem) * var(--schreib-groesse));
+  margin-bottom: .25em;
+  hyphens: auto;
+}
+
+
+/* ---------- Player ---------- */
+
+.player {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: 1.5rem 0 1.75rem;
+  border-top: 1px solid var(--tinte);
+  border-bottom: 1px solid var(--tinte);
+}
+
+.taste {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid var(--tinte);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background-color .12s linear, color .12s linear;
+}
+.taste:hover, .taste:active { background: var(--tinte); color: var(--papier); }
+
+.taste--play {
+  width: 4.5rem; height: 4.5rem;
+  border-radius: 50%;
+  flex: none;
+}
+.taste--play svg { width: 2rem; height: 2rem; }
+.taste--play .ic-pause { display: none; }
+.taste--play[data-laeuft="ja"] .ic-play { display: none; }
+.taste--play[data-laeuft="ja"] .ic-pause { display: block; }
+
+.springer { display: flex; gap: .6rem; }
+
+.taste--klein {
+  width: 3.4rem; height: 3.4rem;
+  border-radius: 50%;
+  position: relative;
+  flex: none;
+}
+.taste--klein svg {
+  width: 100%; height: 100%;
+  position: absolute; inset: 0;
+  padding: .55rem;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.taste--klein span {
+  position: relative;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  margin-top: .15rem;
+}
+
+/* Die Fortschrittsanzeige ist eine Schreiblinie:
+   zwei Hilfslinien, eine Grundlinie, darauf die Tinte. */
+.spur { min-width: 0; }
+
+.linie {
+  position: relative;
+  height: 3.5rem;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.linie__hilfslinie,
+.linie__grundlinie,
+.linie__tinte {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+}
+
+.linie__hilfslinie { background: var(--linie); }
+.linie__hilfslinie--oben  { top: 25%; }
+.linie__hilfslinie--mitte { top: 50%; }
+
+.linie__grundlinie { top: 75%; background: var(--linie); }
+
+.linie__tinte {
+  top: 75%;
+  right: auto;
+  width: 0;
+  height: 3px;
+  margin-top: -1px;
+  background: var(--tinte);
+}
+
+.linie__feder {
+  position: absolute;
+  top: 75%;
+  left: 0;
+  width: 3px;
+  height: 1.7rem;
+  margin-top: -1.55rem;
+  background: var(--tinte);
+  transform: rotate(14deg);
+  transform-origin: bottom center;
+}
+
+.zeiten {
+  display: flex;
+  justify-content: space-between;
+  font-size: .82rem;
+  color: var(--grau);
+  padding-top: .1rem;
+}
+
+.hinweis {
+  margin: 1.25rem 0 0;
+  padding: .85rem 1rem;
+  border: 1px dashed var(--tinte);
+  font-size: .9rem;
+}
+
+
+/* ---------- Bild, Text, Transkript ---------- */
+
+.bild {
+  margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+}
+.bild img {
+  width: 100%;
+  filter: grayscale(var(--bild-graustufen));
+  border: 1px solid var(--linie);
+}
+.bild figcaption {
+  margin-top: .7rem;
+  font-size: .8rem;
+  color: var(--grau);
+  max-width: 46em;
+}
+
+.text {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 34em;
+}
+.text p { margin: 0 0 1em; }
+.text p:last-child { margin-bottom: 0; }
+
+.transkript {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--linie);
+  max-width: 42em;
+}
+.transkript summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  font-weight: 500;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+}
+.transkript summary::marker { content: ""; }
+.transkript summary::-webkit-details-marker { display: none; }
+.transkript summary::after {
+  content: "";
+  width: .55rem; height: .55rem;
+  margin-left: .7rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-.15rem);
+}
+.transkript[open] summary::after { transform: rotate(-135deg) translateY(-.15rem); }
+.transkript__inhalt {
+  padding-bottom: 1.5rem;
+  font-size: .98rem;
+  color: #1f1f1f;
+  max-width: 38em;
+}
+.transkript__inhalt p { margin: 0 0 .9em; }
+
+
+/* ---------- Weiter ---------- */
+
+.weiter {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  border-top: 1px solid var(--tinte);
+}
+
+.weiter__link {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 1.25rem 0;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.weiter__link--rechts { text-align: right; align-items: flex-end; }
+.weiter__link[hidden] { display: none; }
+
+.weiter__rolle {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  color: var(--grau);
+}
+.weiter__titel {
+  font-family: var(--schreibschrift);
+  font-weight: 400;
+  font-size: calc(1.5rem * var(--schreib-groesse));
+  line-height: var(--schreib-zeilen);
+}
+.weiter__link:hover .weiter__titel { text-decoration: underline; text-underline-offset: .12em; }
+
+
+/* ---------- Fußzeile (nur in der Fassung im Netz) ---------- */
+
+.fuss {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.1rem var(--rand);
+  border-top: 1px solid var(--linie);
+  font-size: .78rem;
+}
+.fuss a { color: var(--grau); text-decoration: none; }
+.fuss a:hover { color: var(--tinte); text-decoration: underline; }
+
+
+/* ---------- Kleine Bildschirme ---------- */
+
+@media (max-width: 40rem) {
+  .player {
+    grid-template-columns: auto 1fr;
+    row-gap: 1.25rem;
+  }
+  .spur { grid-column: 2; }
+  .springer { grid-column: 1 / -1; justify-content: flex-start; }
+  .intro__quellen {
+  margin: 1.1rem 0 0;
+  font-size: .78rem;
+  color: var(--grau);
+  max-width: 36em;
+}
+
+.kacheln { grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); }
+}
+
+
+/* ---------- Bewegung reduzieren ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

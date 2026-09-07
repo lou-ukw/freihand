@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Hörstation zur Ausstellung FREIHAND. Schrift, Schule, Gemeinschaft. Mitte Museum, Berlin.">
+<meta name="robots" content="noindex, nofollow">
+<title>Zum Hören – FREIHAND</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="kopf">
+  <a class="kopf__marke" href="#/" aria-label="Zur Übersicht">
+    <span class="kopf__titel" id="kopf-titel">FREIHAND</span>
+    <span class="kopf__unter" id="kopf-unter">Schrift, Schule, Gemeinschaft</span>
+  </a>
+  <span class="kopf__ort" id="kopf-ort">Mitte Museum</span>
+</header>
+
+<main id="inhalt" tabindex="-1"></main>
+
+<!-- Vorlage: Übersicht -->
+<template id="tpl-uebersicht">
+  <section class="uebersicht">
+    <div class="intro">
+      <h1 class="schreib intro__titel" id="intro-titel">Zum Hören</h1>
+      <p class="intro__text" id="intro-text"></p>
+      <p class="intro__quellen" id="intro-quellen" hidden></p>
+    </div>
+    <ul class="kacheln" id="kacheln"></ul>
+  </section>
+</template>
+
+<!-- Vorlage: Kapitelseite -->
+<template id="tpl-kapitel">
+  <article class="kapitel">
+
+    <nav class="kapitel__leiste">
+      <a class="zurueck" href="#/">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 5 7 12l7 7"/></svg>
+        Übersicht
+      </a>
+      <span class="zaehler" id="zaehler"></span>
+    </nav>
+
+    <h1 class="schreib kapitel__titel" id="kapitel-titel"></h1>
+
+    <section class="player" aria-label="Audioplayer">
+      <button class="taste taste--play" id="btn-play" aria-label="Abspielen">
+        <svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z"/></svg>
+        <svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.5 5.5h3.5v13H8.5zM14 5.5h3.5v13H14z"/></svg>
+      </button>
+
+      <div class="spur">
+        <div class="linie" id="linie" role="slider" tabindex="0"
+             aria-label="Position im Hörbeitrag"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+             aria-valuetext="0 Sekunden">
+          <span class="linie__hilfslinie linie__hilfslinie--oben"></span>
+          <span class="linie__hilfslinie linie__hilfslinie--mitte"></span>
+          <span class="linie__grundlinie"></span>
+          <span class="linie__tinte" id="linie-tinte"></span>
+          <span class="linie__feder" id="linie-feder"></span>
+        </div>
+        <div class="zeiten">
+          <span id="zeit-jetzt">0:00</span>
+          <span id="zeit-gesamt">–:––</span>
+        </div>
+      </div>
+
+      <div class="springer">
+        <button class="taste taste--klein" id="btn-zurueck15" aria-label="15 Sekunden zurück">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6V2.5L7 6l5 3.5V6a6.5 6.5 0 1 1-6.5 6.5"/></svg>
+          <span>15</span>
+        </button>
+        <button class="taste taste--klein" id="btn-vor15" aria-label="15 Sekunden vor">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6V2.5L17 6l-5 3.5V6a6.5 6.5 0 1 0 6.5 6.5"/></svg>
+          <span>15</span>
+        </button>
+      </div>
+    </section>
+
+    <p class="hinweis" id="audio-hinweis" hidden></p>
+
+    <figure class="bild" id="bild-figur" hidden>
+      <img id="bild" alt="">
+      <figcaption id="bildunterschrift"></figcaption>
+    </figure>
+
+    <div class="text" id="kapitel-text"></div>
+
+    <details class="transkript" id="transkript-box" hidden>
+      <summary>Text mitlesen</summary>
+      <div class="transkript__inhalt" id="transkript-inhalt"></div>
+    </details>
+
+    <nav class="weiter">
+      <a class="weiter__link" id="link-vorher" href="#/">
+        <span class="weiter__rolle">Vorher</span>
+        <span class="weiter__titel"></span>
+      </a>
+      <a class="weiter__link weiter__link--rechts" id="link-naechstes" href="#/">
+        <span class="weiter__rolle">Als Nächstes</span>
+        <span class="weiter__titel"></span>
+      </a>
+    </nav>
+  </article>
+</template>
+
+<footer class="fuss" id="fuss" hidden>
+  <a id="fuss-impressum" href="#" hidden>Impressum</a>
+  <a id="fuss-datenschutz" href="#" hidden>Datenschutz</a>
+</footer>
+
+<script src="assets/js/kapitel.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
