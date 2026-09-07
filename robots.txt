@@ -1,0 +1,4 @@
+# Diese Seite ist eine Ausstellungsstation, kein Webangebot.
+# Suchmaschinen sollen sie nicht in ihren Index aufnehmen.
+User-agent: *
+Disallow: /
